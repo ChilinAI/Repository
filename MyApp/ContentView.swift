@@ -1,24 +1,31 @@
-//
-//  ContentView.swift
-//  MyApp
-//
-//  Created by Александр Чилин on 03.06.2024.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @State private var text = "Hello, SwiftUI!"
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text(text)
+                .accessibilityIdentifier("MyLabel")
+            Button(action: {
+                self.text = "Hello, World!"
+            }) {
+                Text("Tap me")
+            }
+            .accessibilityIdentifier("MyButton")
+            .padding()
+            
+            Button("TAP 3") {
+                print("TAP 3")
+            }
+           
         }
         .padding()
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }

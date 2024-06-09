@@ -1,41 +1,28 @@
-//
-//  MyAppUITests.swift
-//  MyAppUITests
-//
-//  Created by Александр Чилин on 03.06.2024.
-//
-
 import XCTest
 
-final class MyAppUITests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+class MyAppUITests: XCTestCase {
 
     func testExample() throws {
-        // UI tests must launch the application that they test.
         let app = XCUIApplication()
-        app.launch()
+        app.launch() // Запуск приложения
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+        let label = app.staticTexts["MyLabel"]
+        let button = app.buttons["MyButton"] // Нашли первую кнопку
+        let buttonTAP2 = app.buttons["TAP 3"] // Нашли вторую кнопку по тексту
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+        XCTAssertTrue(label.exists, "Label should exist")
+        XCTAssertTrue(button.exists, "Button should exist")
+        XCTAssertTrue(buttonTAP2.exists, "Ошибка: Отсутствует кнопка buttonTAP2")
+
+        button.tap() // Нажали на первую кнопку
+        XCTAssertEqual(label.label, "Hello, World!", "Label text should be 'Hello, World!' after button tap")
+        
+        // Нажимаем на вторую кнопку
+        buttonTAP2.tap()
+        
+        // Логируем успех
+        let attachment = XCTAttachment(string: "Tap2Button was tapped")
+        attachment.lifetime = .keepAlways
+        add(attachment)
     }
 }
