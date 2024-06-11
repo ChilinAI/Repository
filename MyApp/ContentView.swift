@@ -15,7 +15,7 @@ struct ContentView: View {
             .accessibilityIdentifier("MyButton")
             .padding()
             
-            Button("TAP 4") {
+            Button("TAP 3") {
                 print("TAP 3")
             }
            
