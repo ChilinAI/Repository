@@ -9,8 +9,8 @@ class MyAppUITests: XCTestCase {
         let label = app.staticTexts["MyLabel"]
         let button = app.buttons["MyButton"] // Нашли первую кнопку
         let buttonTAP2 = app.buttons["TAP 3"] // Нашли вторую кнопку по тексту
-
-        XCTAssertTrue(label.exists, "Label should exist")
+            //
+        XCTAssertTrue(label.exists, "Label should exist") // Проверка условия
         XCTAssertTrue(button.exists, "Button should exist")
         XCTAssertTrue(buttonTAP2.exists, "Ошибка: Отсутствует кнопка buttonTAP2")
 
