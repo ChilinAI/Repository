@@ -16,7 +16,7 @@ class MyAppUITests: XCTestCase {
 
         button.tap() // Нажали на первую кнопку
         XCTAssertEqual(label.label, "Hello, World!", "Label text should be 'Hello, World!' after button tap")
-          
+           
         // Нажимаем на вторую кнопку
         buttonTAP2.tap()
         
