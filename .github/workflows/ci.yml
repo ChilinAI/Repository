@@ -20,8 +20,15 @@ jobs:
         with:
           xcode-version: '15.4'
 
-      - name: Build and Test
-        run: xcodebuild -scheme MyApp -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.5' build test
+      # Закомментированы шаги сборки и тестирования
+      # - name: Build and Test
+      #   run: xcodebuild -scheme MyApp -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.5' build test
+
+      - name: Run Tests
+        run: |
+          echo "Running tests..."
+          xcodebuild -scheme MyApp -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=14.4' test
+          exit 1  # Искусственно вызываем ошибку для тестирования уведомлений
 
   notify:
     runs-on: ubuntu-latest
@@ -35,7 +42,7 @@ jobs:
           SLACK_USERNAME: 'GitHub Actions'
           SLACK_ICON_EMOJI: ':github:'
         with:
-          message: "❌ Build failed in repository ${{ github.repository }} for commit ${{ github.sha }}."
+          message: "❌ Build failed in repository ${{ github.repository }} for commit ${{ github.sha }}. Check details: ${{ github.run_url }}"
 
       - name: Notify Slack on Success
         if: success()
@@ -45,7 +52,7 @@ jobs:
           SLACK_USERNAME: 'GitHub Actions'
           SLACK_ICON_EMOJI: ':github:'
         with:
-          message: "✅ Build succeeded in repository ${{ github.repository }} for commit ${{ github.sha }}."
+          message: "✅ Build succeeded in repository ${{ github.repository }} for commit ${{ github.sha }}. Check details: ${{ github.run_url }}"
 
       - name: Notify Telegram on Failure
         if: failure()
