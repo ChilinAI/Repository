@@ -46,6 +46,16 @@ jobs:
         with:
           message: "❌ Build failed in repository ${{ github.repository }} for commit ${{ github.sha }}. Check details: ${{ github.run_url }}"
 
+      - name: Notify Slack on Success
+        if: always()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_USERNAME: 'GitHub Actions'
+          SLACK_ICON_EMOJI: ':github:'
+        with:
+          message: "✅ Build succeeded in repository ${{ github.repository }} for commit ${{ github.sha }}. Check details: ${{ github.run_url }}"
+
       - name: Notify Telegram on Failure
         if: always()
         env:
@@ -53,3 +63,11 @@ jobs:
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d chat_id=${{ env.CHAT_ID }} -d text="❌ Build failed in repository: ${{ github.repository }}. Commit: ${{ github.sha }}. Check details: ${{ github.run_url }}"
+
+      - name: Notify Telegram on Success
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d chat_id=${{ env.CHAT_ID }} -d text="✅ Build succeeded in repository: ${{ github.repository }}. Commit: ${{ github.sha }}. Check details: ${{ github.run_url }}"
