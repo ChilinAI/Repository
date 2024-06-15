@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest  # Изменено на macOS
+    runs-on: macos-latest  # Используем macOS для выполнения
 
     steps:
       - uses: actions/checkout@v4
@@ -20,10 +20,13 @@ jobs:
         with:
           xcode-version: '15.4'
 
+      - name: List Simulators
+        run: xcrun simctl list devices
+
       - name: Build and Test
         run: |
           echo "Running build and tests..."
-          xcodebuild -scheme MyApp -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=14.4' build test
+          xcodebuild -scheme MyApp -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.5' build test
 
       - name: Notify Telegram on Failure
         if: failure()
