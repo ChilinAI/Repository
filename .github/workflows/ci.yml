@@ -21,9 +21,7 @@ jobs:
           xcode-version: '15.4'
 
       - name: Build and Test
-        run: |
-          echo "Running tests..."
-          xcodebuild -scheme MyApp -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.5' build test
+        run: xcodebuild -scheme MyApp -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.5' build test
 
   notify:
     runs-on: ubuntu-latest
@@ -53,7 +51,7 @@ jobs:
         if: failure()
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          CHAT_ID: 546454208
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d chat_id=${{ env.CHAT_ID }} -d text="❌ Build failed in repository: ${{ github.repository }}. Commit: ${{ github.sha }}. Check details: ${{ github.run_url }}"
 
@@ -61,6 +59,6 @@ jobs:
         if: success()
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          CHAT_ID: 546454208
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d chat_id=${{ env.CHAT_ID }} -d text="✅ Build succeeded in repository: ${{ github.repository }}. Commit: ${{ github.sha }}. Check details: ${{ github.run_url }}"
